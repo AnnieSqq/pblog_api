@@ -16,6 +16,10 @@ module.exports = (app) => {
   app.use('/test', require('./test.js'))
 
   // 后台
+  // 登录
+  app.use('/admin/login',require('./admin/login.js'))
+  // 获取管理员信息
+  app.use('/admin/info',require('./admin/adminInfo.js'))
   // 文章模块
   app.use('/admin/article', require('./admin/article.js'))
   // 文章分类模块
