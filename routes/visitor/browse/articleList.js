@@ -17,7 +17,12 @@ module.exports = async (req, res) => {
       return {
         id: article._id,
         title: article.title,
-        release_time: article.createAt
+        release_time: article.createAt,
+        reader_num: article.reader_num,
+        like_num: article.like_num,
+        comment_num: article.comment_num,
+        collect_num: article.collect_num,
+        word_count: article.word_count
       }
     })
     categories[i].data = articles

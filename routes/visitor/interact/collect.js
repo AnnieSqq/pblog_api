@@ -1,5 +1,6 @@
 // 收藏/取消收藏
 const { Interact, validateInteract } = require(Gapi.paths.model + 'Interact')
+const { Article } = require(Gapi.paths.model + 'Article')
 module.exports = async (req, res) => {
   // 交互中的文章id必须有
   if (!req.fields.article) {
@@ -29,6 +30,8 @@ module.exports = async (req, res) => {
       { $set: { isDeleted: !collect.isDeleted } },
       { new: true }
     )
+    // 更新文章信息统计
+    await updateArticle(req.fields.article)
     return res.send({
       code: '200',
       msg: collect.isDeleted ? '取消收藏成功' : '收藏成功'
@@ -41,8 +44,26 @@ module.exports = async (req, res) => {
     action: 'collect'
   })
   await collect.save()
+  // 更新文章信息统计
+  await updateArticle(req.fields.article)
   res.send({
     code: '200',
     msg: '收藏成功'
+  })
+}
+/**
+ * 更新文章信息统计
+ * @param {String} article  文章id
+ */
+async function updateArticle(article) {
+  const collect_num = (
+    await Interact.find({
+      action: 'collect',
+      isDeleted: false,
+      article: article
+    })
+  ).length
+  await Article.findByIdAndUpdate(article, {
+    $set: { collect_num }
   })
 }

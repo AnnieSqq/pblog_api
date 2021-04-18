@@ -1,5 +1,6 @@
 // 评论
 const { Interact, validateInteract } = require(Gapi.paths.model + 'Interact')
+const { Article } = require(Gapi.paths.model + 'Article')
 module.exports = async (req, res) => {
   // 交互中的文章id必须有，或者行为是留言
   if (
@@ -35,9 +36,27 @@ module.exports = async (req, res) => {
     reply: req.fields.reply
   })
   await comment.save()
+  // 更新文章信息统计
+  await updateArticle(req.fields.article)
   res.send({
     code: '200',
     msg: '添加' + msg + '成功',
     data: comment
+  })
+}
+/**
+ * 更新文章信息统计
+ * @param {String} article  文章id
+ */
+async function updateArticle(article) {
+  const comment_num = (
+    await Interact.find({
+      action: 'comment',
+      isDeleted: false,
+      article: article
+    })
+  ).length
+  await Article.findByIdAndUpdate(article, {
+    $set: { comment_num }
   })
 }

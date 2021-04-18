@@ -29,6 +29,26 @@ const ArticleSchema = new Schema({
   updateAt: {
     type: Date,
     default: Date.now
+  },
+  reader_num: {
+    type: Number,
+    default: 0
+  },
+  like_num: {
+    type: Number,
+    default: 0
+  },
+  comment_num: {
+    type: Number,
+    default: 0
+  },
+  collect_num: {
+    type: Number,
+    default: 0
+  },
+  word_count: {
+    type: Number,
+    default: 0
   }
 })
 // 创建模型
