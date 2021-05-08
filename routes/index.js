@@ -34,4 +34,7 @@ module.exports = (app) => {
   app.use('/visitor/interact', require('./visitor/interact.js'))
   // 阅读页面模块
   app.use('/visitor/read', require('./visitor/read.js'))
+
+  // 小程序端
+  app.use('/mini/browse',require('./mini/browse.js'))
 }
